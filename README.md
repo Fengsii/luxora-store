@@ -1,12 +1,51 @@
-# React + Vite
+🛍️ Luxora Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Luxora Store adalah platform e-commerce fashion modern yang memungkinkan pengguna menemukan, memilih, dan membeli berbagai gaya fashion sesuai keinginan mereka.
+Website ini menghadirkan pengalaman berbelanja online yang lengkap dengan sistem manajemen produk dan transaksi.
 
-Currently, two official plugins are available:
+Register: Pendaftaran akun pengguna baru
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Login: Masuk ke akun pengguna yang sudah terdaftar
 
-## Expanding the ESLint configuration
+🛠️ Panel Admin
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Dashboard Admin: Menyajikan overview lengkap sistem dan statistik
+
+Manajemen Produk
+
+Tambah, edit, dan hapus produk fashion
+
+Upload gambar produk
+
+Atur harga produk
+
+Manajemen Pesanan: Menampilkan dan memperbarui status pesanan
+
+Manajemen User: Melihat data pengguna terdaftar
+
+Logout: Keluar dari sistem admin
+
+👤 Panel User
+
+Home Page: Halaman utama dengan katalog produk terbaru dan terpopuler
+
+Profile Management
+
+Menampilkan profil pengguna
+
+Riwayat pembelian dan aktivitas
+
+Sistem Pembayaran
+
+Top up saldo untuk transaksi
+
+Manajemen Pesanan: Melihat status dan riwayat pesanan
+
+Shopping Experience
+
+Pembelian produk dengan sistem keranjang
+
+Fitur wishlist untuk menyimpan produk favorit
+
+Menyimpan produk ke keranjang belanja
+
