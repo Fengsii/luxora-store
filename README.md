@@ -21,7 +21,7 @@
 
 - Manajemen Pesanan: Menampilkan dan memperbarui status pesanan
 
- -Manajemen User: Melihat data pengguna terdaftar
+- Manajemen User: Melihat data pengguna terdaftar
 
 # 👤 Panel User
 
