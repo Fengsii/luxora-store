@@ -1,23 +1,3 @@
-// const Footer = () =>{
-//     return (
-//         <>
-//             <h1>Instagram</h1>
-//             <h1>facebook</h1>
-//             <h1>LinkedIn</h1>
-//             <h1>@Efengsi Rahmanto Zalukhu 2025</h1>
-//             <h1>Github</h1>
-//             <h1>Portofolio</h1>
-//         </>
-//     )
-// }
-
-// export default Footer;
-
-
-
-
-
-
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { 
