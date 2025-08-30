@@ -1,51 +1,49 @@
-🛍️ Luxora Store
+# 🛍️ Luxora Store
 
-Luxora Store adalah platform e-commerce fashion modern yang memungkinkan pengguna menemukan, memilih, dan membeli berbagai gaya fashion sesuai keinginan mereka.
-Website ini menghadirkan pengalaman berbelanja online yang lengkap dengan sistem manajemen produk dan transaksi.
+## Luxora Store adalah platform e-commerce fashion modern yang memungkinkan pengguna menemukan, memilih, dan membeli berbagai gaya fashion sesuai keinginan mereka.
+## Website ini menghadirkan pengalaman berbelanja online yang lengkap dengan sistem manajemen produk dan transaksi.
 
 ### Register: Pendaftaran akun pengguna baru
 
 ### Login: Masuk ke akun pengguna yang sudah terdaftar
 
-🛠️ Panel Admin
+# 🛠️ Panel Admin
 
-Dashboard Admin: Menyajikan overview lengkap sistem dan statistik
+## Dashboard Admin: Menyajikan overview lengkap sistem dan statistik
 
-Manajemen Produk
+- Manajemen Produk
 
-Tambah, edit, dan hapus produk fashion
+- Tambah, edit, dan hapus produk fashion
 
-Upload gambar produk
+- Upload gambar produk
 
-Atur harga produk
+- Atur harga produk
 
-Manajemen Pesanan: Menampilkan dan memperbarui status pesanan
+## Manajemen Pesanan: Menampilkan dan memperbarui status pesanan
 
-Manajemen User: Melihat data pengguna terdaftar
+## Manajemen User: Melihat data pengguna terdaftar
 
-Logout: Keluar dari sistem admin
+## Logout: Keluar dari sistem admin
 
-👤 Panel User
+# 👤 Panel User
 
-Home Page: Halaman utama dengan katalog produk terbaru dan terpopuler
+## Home Page: Halaman utama dengan katalog produk terbaru dan terpopuler
 
-Profile Management
+- Profile Management
 
-Menampilkan profil pengguna
+- Menampilkan profil pengguna
 
-Riwayat pembelian dan aktivitas
+- Riwayat pembelian dan aktivitas
 
-Sistem Pembayaran
+- Sistem Pembayaran
 
-Top up saldo untuk transaksi
+- Top up saldo untuk transaksi
 
-Manajemen Pesanan: Melihat status dan riwayat pesanan
+## Manajemen Pesanan: Melihat status dan riwayat pesanan
 
-Shopping Experience
+- Pembelian produk dengan sistem keranjang
 
-Pembelian produk dengan sistem keranjang
+- Fitur wishlist untuk menyimpan produk favorit
 
-Fitur wishlist untuk menyimpan produk favorit
-
-Menyimpan produk ke keranjang belanja
+- Menyimpan produk ke keranjang belanja
 
