@@ -9,7 +9,7 @@
 
 # 🛠️ Panel Admin
 
-## Dashboard Admin: Menyajikan overview lengkap sistem dan statistik
+- Dashboard Admin: Menyajikan overview lengkap sistem dan statistik
 
 - Manajemen Produk
 
@@ -19,17 +19,13 @@
 
 - Atur harga produk
 
-## Manajemen Pesanan: Menampilkan dan memperbarui status pesanan
+- Manajemen Pesanan: Menampilkan dan memperbarui status pesanan
 
-## Manajemen User: Melihat data pengguna terdaftar
-
-## Logout: Keluar dari sistem admin
+ -Manajemen User: Melihat data pengguna terdaftar
 
 # 👤 Panel User
 
-## Home Page: Halaman utama dengan katalog produk terbaru dan terpopuler
-
-- Profile Management
+- Home Page: Halaman utama dengan katalog produk terbaru
 
 - Menampilkan profil pengguna
 
@@ -39,7 +35,7 @@
 
 - Top up saldo untuk transaksi
 
-## Manajemen Pesanan: Melihat status dan riwayat pesanan
+- Manajemen Pesanan: Melihat status dan riwayat pesanan
 
 - Pembelian produk dengan sistem keranjang
 
