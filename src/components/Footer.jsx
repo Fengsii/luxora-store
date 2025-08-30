@@ -102,9 +102,6 @@ const Footer = () => {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-3">
-                <span className="text-blue-900 font-bold text-xl">L</span>
-              </div>
               <h2 className="text-3xl font-bold">LUXORA STORE</h2>
             </motion.div>
             <motion.p 
@@ -299,9 +296,8 @@ const Footer = () => {
             transition={{ delay: 0.5, duration: 0.5 }}
             viewport={{ once: true }}
           >
-            Made with <Heart size={16} className="mx-1 text-red-400" fill="currentColor" /> by 
+            Made with by 
             <span className="font-semibold ml-1">Efengsi Rahmanto Zalukhu</span> 
-            <span className="mx-2">•</span> 
             <span>© 2025</span>
           </motion.p>
           

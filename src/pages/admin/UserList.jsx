@@ -23,7 +23,7 @@
 //         const res = await fetch("https://api-sepokat.vercel.app/api/user/get-all");
 //         const data = await res.json(); // ubah response jadi JSON
 //         setUsers(data); // simpan data ke state
-//       } catch (err) {
+//       } catch (err) { 
 //         console.error("Gagal ambil data user:", err);
 //       }
 //     };
@@ -125,91 +125,25 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from "framer-motion";
-
-// Variants untuk animasi
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut"
-    }
-  }
-};
-
-const tableRowVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut"
-    }
-  },
-  hover: {
-    scale: 1.02,
-    backgroundColor: "#f0f9ff",
-    transition: {
-      duration: 0.2,
-      ease: "easeOut"
-    }
-  }
-};
+import { motion } from "framer-motion";
+import { Search, ChevronLeft, ChevronRight, User, Users, Filter, Eye, Mail, Calendar } from "lucide-react";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        setIsLoading(true);
         const res = await fetch("https://api-sepokat.vercel.app/api/user/get-all");
         const data = await res.json();
         setUsers(data);
-      } catch (err) {
+      } catch (err) { 
         console.error("Gagal ambil data user:", err);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -236,168 +170,248 @@ const UserList = () => {
   const goPrev = () => setCurrentPage((p) => Math.max(1, p - 1));
   const goNext = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
 
-  return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-6"
-    >
-      <div className="max-w-6xl mx-auto">
-        {/* HEADER */}
-        <motion.div variants={itemVariants} className="mb-8">
-          <h1 className="text-3xl font-bold text-blue-800 mb-2">User Management</h1>
-          <p className="text-gray-600">Kelola pengguna Luxora Store dengan mudah</p>
-        </motion.div>
+  // Animasi
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.3,
+        when: "beforeChildren",
+        staggerChildren: 0.2
+      }
+    }
+  };
 
-        {/* SEARCH BAR */}
-        <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 mb-6 border border-blue-100">
-          <div className="relative">
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-blue-50 p-4 md:p-6">
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="bg-white rounded-2xl shadow-lg p-5 md:p-8 mb-6 border border-blue-100"
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-blue-800">User Management</h1>
+              <p className="text-blue-600 mt-2">Manage and view all system users</p>
+            </div>
+            <div className="flex space-x-3 mt-4 md:mt-0">
+              <button className="flex items-center justify-center px-4 py-2 border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50 transition-colors">
+                <Filter className="h-4 w-4 mr-2" />
+                Filter
+              </button>
+            </div>
+          </div>
+
+          {/* Stats Cards */}
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 mb-6 md:mb-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div 
+              className="bg-white p-4 sm:p-5 rounded-xl border border-blue-100 shadow-sm"
+              variants={itemVariants}
+            >
+              <div className="flex items-center">
+                <div className="rounded-xl bg-blue-100 p-2 sm:p-3 mr-3 sm:mr-4">
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm font-medium text-blue-600">Total Users</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-800">{users.length}</p>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="bg-white p-4 sm:p-5 rounded-xl border border-blue-100 shadow-sm"
+              variants={itemVariants}
+            >
+              <div className="flex items-center">
+                <div className="rounded-xl bg-blue-100 p-2 sm:p-3 mr-3 sm:mr-4">
+                  <User className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm font-medium text-blue-600">Filtered Users</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-800">{filteredUsers.length}</p>
+                </div>
+              </div>
+            </motion.div>
+  
+            <motion.div 
+              className="bg-white p-4 sm:p-5 rounded-xl border border-blue-100 shadow-sm"
+              variants={itemVariants}
+            >
+              <div className="flex items-center">
+                <div className="rounded-xl bg-blue-100 p-2 sm:p-3 mr-3 sm:mr-4">
+                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm font-medium text-blue-600">Current Page</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-800">{currentPage}/{totalPages}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+          
+          {/* Search Bar */}
+          <div className="relative mb-8">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+              <Search className="h-5 w-5 text-blue-500" />
             </div>
             <input
               type="text"
               placeholder="Cari username atau nama lengkap..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 pr-4 py-3 w-full border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50"
+              className="block w-full pl-10 pr-3 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-blue-900 placeholder-blue-400"
             />
           </div>
-        </motion.div>
 
-        {/* USER TABLE */}
-        {isLoading ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-center items-center h-64"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"
-            />
-          </motion.div>
-        ) : filteredUsers.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl shadow-md p-12 text-center border border-blue-100"
-          >
-            <svg className="mx-auto h-16 w-16 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <h3 className="mt-4 text-lg font-medium text-blue-800">
-              {search ? "Tidak ada user yang cocok" : "Belum ada user"}
-            </h3>
-            <p className="mt-2 text-blue-600">
-              {search ? "Coba ubah kata kunci pencarian" : "User akan muncul di sini"}
-            </p>
-          </motion.div>
-        ) : (
-          <>
-            <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md overflow-hidden border border-blue-100">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-blue-50">
-                      <th className="px-6 py-4 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
-                        ID
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
-                        Username
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-medium text-blue-700 uppercase tracking-wider">
-                        Nama Lengkap
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-blue-100">
-                    <AnimatePresence>
-                      {currentUsers.map((user, index) => (
-                        <motion.tr
-                          key={user.id}
-                          variants={tableRowVariants}
-                          initial="hidden"
-                          animate="visible"
-                          exit="hidden"
-                          whileHover="hover"
-                          transition={{ delay: index * 0.05 }}
-                          className="cursor-pointer"
+          {users.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-2xl border border-blue-100">
+              <Users className="mx-auto h-16 w-16 text-blue-300" />
+              <h3 className="mt-4 text-xl font-medium text-blue-800">Loading data user...</h3>
+              <p className="mt-2 text-blue-600">Please wait while we fetch user data.</p>
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-2xl border border-blue-100">
+              <Search className="mx-auto h-16 w-16 text-blue-300" />
+              <h3 className="mt-4 text-xl font-medium text-blue-800">Tidak ada user yang cocok</h3>
+              <p className="mt-2 text-blue-600">Coba kata kunci pencarian yang berbeda.</p>
+            </div>
+          ) : (
+            <>
+              {/* Users Table */}
+              <motion.div 
+                className="bg-white rounded-2xl shadow-sm overflow-hidden border border-blue-100"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-blue-100">
+                    <thead className="bg-blue-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-blue-600 uppercase tracking-wider">
+                          ID
+                        </th>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-blue-600 uppercase tracking-wider">
+                          Username
+                        </th>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-blue-600 uppercase tracking-wider">
+                          Nama Lengkap
+                        </th>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-blue-600 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-blue-100">
+                      {currentUsers.map((user) => (
+                        <motion.tr 
+                          key={user.id} 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                          className="hover:bg-blue-50 transition-colors duration-150"
                         >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-900">
-                            {user.id}
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-blue-900">#{user.id}</div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-800 font-medium">
-                            {user.username}
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-blue-900">{user.username}</div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-700">
-                            {user.full_name}
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-blue-900">{user.full_name}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex space-x-2">
+                              <button className="text-blue-500 hover:text-blue-700 p-1 rounded-md hover:bg-blue-100 transition-colors">
+                                <Eye className="h-4 w-4" />
+                              </button>
+                              <button className="text-blue-500 hover:text-blue-700 p-1 rounded-md hover:bg-blue-100 transition-colors">
+                                <Mail className="h-4 w-4" />
+                              </button>
+                            </div>
                           </td>
                         </motion.tr>
                       ))}
-                    </AnimatePresence>
-                  </tbody>
-                </table>
-              </div>
-            </motion.div>
-
-            {/* PAGINATION */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-xl shadow-md p-4 mt-6 border border-blue-100"
-            >
-              <div className="text-sm text-blue-600">
-                Menampilkan {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredUsers.length)} dari {filteredUsers.length} user
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <motion.button
-                  onClick={goPrev}
-                  disabled={currentPage === 1}
-                  whileHover={{ scale: currentPage !== 1 ? 1.05 : 1 }}
-                  whileTap={{ scale: currentPage !== 1 ? 0.95 : 1 }}
-                  className="px-4 py-2 bg-white border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition duration-200 text-blue-700 font-medium"
-                >
-                  Previous
-                </motion.button>
-                
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <motion.button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className={`w-10 h-10 rounded-lg transition duration-200 font-medium ${
-                        currentPage === page
-                          ? "bg-blue-600 text-white"
-                          : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50"
-                      }`}
-                    >
-                      {page}
-                    </motion.button>
-                  ))}
+                    </tbody>
+                  </table>
                 </div>
-                
-                <motion.button
-                  onClick={goNext}
-                  disabled={currentPage === totalPages}
-                  whileHover={{ scale: currentPage !== totalPages ? 1.05 : 1 }}
-                  whileTap={{ scale: currentPage !== totalPages ? 0.95 : 1 }}
-                  className="px-4 py-2 bg-white border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition duration-200 text-blue-700 font-medium"
-                >
-                  Next
-                </motion.button>
+              </motion.div>
+
+              {/* Pagination */}
+              <div className="flex flex-col md:flex-row items-center justify-between mt-6 px-2 space-y-4 md:space-y-0">
+                <div className="text-sm text-blue-600">
+                  Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to{" "}
+                  <span className="font-medium">
+                    {Math.min(indexOfLastItem, filteredUsers.length)}
+                  </span>{" "}
+                  of <span className="font-medium">{filteredUsers.length}</span> users
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={goPrev}
+                    disabled={currentPage === 1}
+                    className={`flex items-center px-3 py-2 rounded-lg border ${
+                      currentPage === 1
+                        ? "bg-blue-100 text-blue-400 cursor-not-allowed"
+                        : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50"
+                    }`}
+                  >
+                    <ChevronLeft className="h-4 w-4 mr-1" />
+                    Previous
+                  </button>
+                  
+                  <div className="hidden md:flex items-center space-x-1">
+                    {[...Array(totalPages)].map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={`px-3 py-1 rounded-lg text-sm ${
+                          currentPage === i + 1
+                            ? "bg-blue-600 text-white"
+                            : "text-blue-700 hover:bg-blue-100"
+                        }`}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  <button
+                    onClick={goNext}
+                    disabled={currentPage === totalPages}
+                    className={`flex items-center px-3 py-2 rounded-lg border ${
+                      currentPage === totalPages
+                        ? "bg-blue-100 text-blue-400 cursor-not-allowed"
+                        : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50"
+                    }`}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </button>
+                </div>
               </div>
-            </motion.div>
-          </>
-        )}
+            </>
+          )}
+        </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

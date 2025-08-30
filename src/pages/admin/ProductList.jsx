@@ -1,7 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle, X, Edit, Save, Image as ImageIcon } from "lucide-react";
 
 const API_BASE = "https://api-sepokat.vercel.app/api/product";
 
@@ -48,19 +48,6 @@ const cardVariants = {
   }
 };
 
-// eslint-disable-next-line no-unused-vars
-const formVariants = {
-  hidden: { height: 0, opacity: 0 },
-  visible: {
-    height: "auto",
-    opacity: 1,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut"
-    }
-  }
-};
-
 const ProductList = () => {
   // STATE DATA & UI
   const [products, setProducts] = useState([]);
@@ -91,6 +78,11 @@ const ProductList = () => {
   // PAGINATION
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  // POPUP NOTIFICATION
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [showUpdateSuccessPopup, setShowUpdateSuccessPopup] = useState(false);
 
   // FETCH PRODUCTS
   const fetchProducts = async () => {
@@ -124,7 +116,14 @@ const ProductList = () => {
       if (!res.ok) throw new Error("Tambah produk gagal");
       setNewProduct({ name: "", price: "", stok: "", image_1: "" });
       await fetchProducts();
-      alert("Produk berhasil ditambahkan!");
+      
+      // Tampilkan popup sukses
+      setShowSuccessPopup(true);
+      
+      // Sembunyikan popup setelah 3 detik
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+      }, 3000);
     } catch (e) {
       alert("Tambah produk gagal!");
       console.error(e);
@@ -145,7 +144,7 @@ const ProductList = () => {
     }
   };
 
-  // START EDIT
+  // START EDIT - Buka popup edit
   const startEdit = (p) => {
     setEditId(p.id);
     setEditForm({
@@ -154,6 +153,7 @@ const ProductList = () => {
       stok: p.stok ?? "",
       image_1: p.image_1 ?? "",
     });
+    setShowEditPopup(true);
   };
 
   // SAVE EDIT
@@ -166,8 +166,16 @@ const ProductList = () => {
       });
       if (!res.ok) throw new Error("Update produk gagal");
       setEditId(null);
+      setShowEditPopup(false);
       await fetchProducts();
-      alert("Produk berhasil diupdate!");
+      
+      // Tampilkan popup sukses update
+      setShowUpdateSuccessPopup(true);
+      
+      // Sembunyikan popup setelah 3 detik
+      setTimeout(() => {
+        setShowUpdateSuccessPopup(false);
+      }, 3000);
     } catch (e) {
       alert("Update produk gagal!");
       console.error(e);
@@ -211,19 +219,19 @@ const ProductList = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-6"
+      className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 sm:p-6"
     >
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}
-        <motion.div variants={itemVariants} className="mb-8">
-          <h1 className="text-3xl font-bold text-blue-800 mb-2">Product Management</h1>
-          <p className="text-gray-600">Kelola produk Luxora Store dengan mudah</p>
+        <motion.div variants={itemVariants} className="mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-blue-800 mb-2">Product Management</h1>
+          <p className="text-sm sm:text-base text-gray-600">Kelola produk Luxora Store dengan mudah</p>
         </motion.div>
 
         {/* SEARCH AND SORT */}
-        <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 mb-6 border border-blue-100 transition-all duration-300 hover:shadow-lg">
+        <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-6 border border-blue-100 transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="flex-1 w-full">
+            <div className="flex-1 w-full md:w-auto">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <svg className="h-5 w-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -235,7 +243,7 @@ const ProductList = () => {
                   placeholder="Cari nama produk..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 pr-4 py-3 w-full border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50"
+                  className="pl-10 pr-4 py-2 sm:py-3 w-full border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
                 />
               </div>
             </div>
@@ -243,7 +251,7 @@ const ProductList = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50"
+              className="px-4 py-2 sm:py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base w-full md:w-auto"
             >
               <option value="name-asc">Nama A → Z</option>
               <option value="name-desc">Nama Z → A</option>
@@ -256,9 +264,9 @@ const ProductList = () => {
         </motion.div>
 
         {/* ADD PRODUCT FORM */}
-        <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 mb-8 border border-blue-100 transition-all duration-300 hover:shadow-lg">
-          <h3 className="text-xl font-semibold text-blue-800 mb-4">Tambah Produk Baru</h3>
-          <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-6 md:mb-8 border border-blue-100 transition-all duration-300 hover:shadow-lg">
+          <h3 className="text-lg sm:text-xl font-semibold text-blue-800 mb-4">Tambah Produk Baru</h3>
+          <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div>
               <label className="block text-sm font-medium text-blue-700 mb-1">Nama Produk</label>
               <input
@@ -266,7 +274,7 @@ const ProductList = () => {
                 value={newProduct.name}
                 onChange={(e) => setNewProduct((s) => ({ ...s, name: e.target.value }))}
                 required
-                className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50"
+                className="w-full px-3 sm:px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
               />
             </div>
             <div>
@@ -277,7 +285,7 @@ const ProductList = () => {
                 value={newProduct.price}
                 onChange={(e) => setNewProduct((s) => ({ ...s, price: e.target.value }))}
                 required
-                className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50"
+                className="w-full px-3 sm:px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
               />
             </div>
             <div>
@@ -288,7 +296,7 @@ const ProductList = () => {
                 value={newProduct.stok}
                 onChange={(e) => setNewProduct((s) => ({ ...s, stok: e.target.value }))}
                 required
-                className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50"
+                className="w-full px-3 sm:px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
               />
             </div>
             <div>
@@ -297,15 +305,15 @@ const ProductList = () => {
                 placeholder="URL gambar"
                 value={newProduct.image_1}
                 onChange={(e) => setNewProduct((s) => ({ ...s, image_1: e.target.value }))}
-                className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50"
+                className="w-full px-3 sm:px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
               />
             </div>
-            <div className="md:col-span-4">
+            <div className="md:col-span-2 lg:col-span-4 flex justify-center md:justify-start mt-2">
               <motion.button
                 type="submit"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-md w-full md:w-auto"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-md text-sm sm:text-base w-full md:w-auto"
               >
                 + Tambah Produk
               </motion.button>
@@ -330,149 +338,82 @@ const ProductList = () => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-red-50 border border-red-200 rounded-xl p-6 text-center"
+            className="bg-red-50 border border-red-200 rounded-xl p-4 sm:p-6 text-center"
           >
-            <p className="text-red-600">{err}</p>
+            <p className="text-red-600 text-sm sm:text-base">{err}</p>
           </motion.div>
         ) : currentProducts.length === 0 ? (
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-xl shadow-md p-12 text-center border border-blue-100"
+            className="bg-white rounded-xl shadow-md p-6 sm:p-8 md:p-12 text-center border border-blue-100"
           >
-            <svg className="mx-auto h-16 w-16 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="mx-auto h-12 sm:h-16 w-12 sm:w-16 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-16" />
             </svg>
-            <h3 className="mt-4 text-lg font-medium text-blue-800">Tidak ada produk</h3>
-            <p className="mt-2 text-blue-600">Coba ubah pencarian atau filter Anda</p>
+            <h3 className="mt-4 text-base sm:text-lg font-medium text-blue-800">Tidak ada produk</h3>
+            <p className="mt-2 text-blue-600 text-sm sm:text-base">Coba ubah pencarian atau filter Anda</p>
           </motion.div>
         ) : (
           <>
             <motion.div 
               variants={containerVariants}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-6 md:mb-8"
             >
               <AnimatePresence>
-                {currentProducts.map((p) => {
-                  const isEditing = editId === p.id;
+                {currentProducts.map((p) => (
+                  <motion.div
+                    key={p.id}
+                    layout
+                    variants={cardVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    whileHover="hover"
+                    className="bg-white rounded-xl shadow-md border border-blue-100 overflow-hidden"
+                  >
+                    <div className="p-4 sm:p-5">
+                      <div className="flex justify-center mb-4">
+                        <motion.img
+                          src={p.image_1}
+                          alt={p.name}
+                          className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-cover rounded-lg border border-blue-100"
+                          onError={onImgError}
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.2 }}
+                        />
+                      </div>
 
-                  return (
-                    <motion.div
-                      key={p.id}
-                      layout
-                      variants={cardVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden"
-                      whileHover="hover"
-                      className="bg-white rounded-xl shadow-md border border-blue-100 overflow-hidden"
-                    >
-                      <div className="p-4">
-                        <div className="flex justify-center mb-4">
-                          <motion.img
-                            src={p.image_1}
-                            alt={p.name}
-                            className="w-32 h-32 object-cover rounded-lg border border-blue-100"
-                            onError={onImgError}
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.2 }}
-                          />
+                      <div>
+                        <h3 className="font-semibold text-base md:text-lg text-blue-800 mb-2 truncate">{p.name}</h3>
+                        <div className="space-y-2 mb-4">
+                          <p className="text-blue-600 text-sm md:text-base">Harga: <span className="font-semibold">Rp {Number(p.price).toLocaleString("id-ID")}</span></p>
+                          <p className="text-blue-600 text-sm md:text-base">Stok: <span className="font-semibold">{p.stok}</span></p>
                         </div>
 
-                        <AnimatePresence mode="wait">
-                          {!isEditing ? (
-                            <motion.div
-                              key="view"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <h3 className="font-semibold text-lg text-blue-800 mb-2 truncate">{p.name}</h3>
-                              <div className="space-y-2 mb-4">
-                                <p className="text-blue-600">Harga: <span className="font-semibold">Rp {Number(p.price).toLocaleString("id-ID")}</span></p>
-                                <p className="text-blue-600">Stok: <span className="font-semibold">{p.stok}</span></p>
-                              </div>
-
-                              <div className="flex gap-2">
-                                <motion.button
-                                  onClick={() => startEdit(p)}
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  className="flex-1 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition duration-200 font-medium"
-                                >
-                                  Edit
-                                </motion.button>
-                                <motion.button
-                                  onClick={() => handleDelete(p.id)}
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  className="flex-1 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition duration-200 font-medium"
-                                >
-                                  Hapus
-                                </motion.button>
-                              </div>
-                            </motion.div>
-                          ) : (
-                            <motion.div
-                              key="edit"
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <div className="space-y-3 mb-4">
-                                <input
-                                  value={editForm.name}
-                                  onChange={(e) => setEditForm((s) => ({ ...s, name: e.target.value }))}
-                                  className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 bg-blue-50"
-                                  placeholder="Nama produk"
-                                />
-                                <input
-                                  value={editForm.price}
-                                  onChange={(e) => setEditForm((s) => ({ ...s, price: e.target.value }))}
-                                  className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 bg-blue-50"
-                                  placeholder="Harga"
-                                />
-                                <input
-                                  value={editForm.stok}
-                                  onChange={(e) => setEditForm((s) => ({ ...s, stok: e.target.value }))}
-                                  className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 bg-blue-50"
-                                  placeholder="Stok"
-                                />
-                                <input
-                                  value={editForm.image_1}
-                                  onChange={(e) => setEditForm((s) => ({ ...s, image_1: e.target.value }))}
-                                  className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 bg-blue-50"
-                                  placeholder="URL Gambar"
-                                />
-                              </div>
-
-                              <div className="flex gap-2">
-                                <motion.button
-                                  onClick={() => saveEdit(p.id)}
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 font-medium"
-                                >
-                                  Simpan
-                                </motion.button>
-                                <motion.button
-                                  onClick={() => setEditId(null)}
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition duration-200 font-medium"
-                                >
-                                  Batal
-                                </motion.button>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        <div className="flex gap-2">
+                          <motion.button
+                            onClick={() => startEdit(p)}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex-1 px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition duration-200 font-medium flex items-center justify-center gap-1 text-xs sm:text-sm"
+                          >
+                            <Edit size={14} />
+                            <span>Edit</span>
+                          </motion.button>
+                          <motion.button
+                            onClick={() => handleDelete(p.id)}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="flex-1 px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition duration-200 font-medium text-xs sm:text-sm"
+                          >
+                            Hapus
+                          </motion.button>
+                        </div>
                       </div>
-                    </motion.div>
-                  );
-                })}
+                    </div>
+                  </motion.div>
+                ))}
               </AnimatePresence>
             </motion.div>
 
@@ -481,9 +422,9 @@ const ProductList = () => {
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-xl shadow-md p-4 border border-blue-100"
+                className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 bg-white rounded-xl shadow-md p-4 sm:p-5 border border-blue-100"
               >
-                <div className="text-sm text-blue-600">
+                <div className="text-xs sm:text-sm text-blue-600">
                   Menampilkan {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, normalized.length)} dari {normalized.length} produk
                 </div>
                 
@@ -493,9 +434,9 @@ const ProductList = () => {
                     onClick={() => setCurrentPage((p) => p - 1)}
                     whileHover={{ scale: currentPage !== 1 ? 1.05 : 1 }}
                     whileTap={{ scale: currentPage !== 1 ? 0.95 : 1 }}
-                    className="px-4 py-2 bg-white border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition duration-200 text-blue-700"
+                    className="px-3 py-2 bg-white border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition duration-200 text-blue-700 text-xs sm:text-sm"
                   >
-                    Previous
+                    Prev
                   </motion.button>
                   
                   <div className="flex items-center gap-1">
@@ -505,7 +446,7 @@ const ProductList = () => {
                         onClick={() => setCurrentPage(page)}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className={`w-10 h-10 rounded-lg transition duration-200 font-medium ${
+                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition duration-200 font-medium text-xs sm:text-sm ${
                           currentPage === page
                             ? "bg-blue-600 text-white"
                             : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50"
@@ -521,7 +462,7 @@ const ProductList = () => {
                     onClick={() => setCurrentPage((p) => p + 1)}
                     whileHover={{ scale: currentPage !== totalPages ? 1.05 : 1 }}
                     whileTap={{ scale: currentPage !== totalPages ? 0.95 : 1 }}
-                    className="px-4 py-2 bg-white border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition duration-200 text-blue-700"
+                    className="px-3 py-2 bg-white border border-blue-200 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-50 transition duration-200 text-blue-700 text-xs sm:text-sm"
                   >
                     Next
                   </motion.button>
@@ -531,6 +472,271 @@ const ProductList = () => {
           </>
         )}
       </div>
+
+      {/* Success Popup - Add Product */}
+      <AnimatePresence>
+        {showSuccessPopup && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none p-4">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.8, y: 50 },
+                visible: { 
+                  opacity: 1, 
+                  scale: 1, 
+                  y: 0,
+                  transition: { 
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20
+                  }
+                },
+                exit: { 
+                  opacity: 0, 
+                  scale: 0.8,
+                  y: 50,
+                  transition: { duration: 0.2 }
+                }
+              }}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="bg-white rounded-xl p-4 sm:p-6 shadow-2xl border-2 border-green-200 max-w-xs sm:max-w-sm w-full"
+            >
+              <div className="text-center">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 bg-green-100">
+                  <motion.div
+                    variants={{
+                      hidden: { scale: 0, opacity: 0 },
+                      visible: { 
+                        scale: 1, 
+                        opacity: 1,
+                        transition: { 
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 10,
+                          delay: 0.1
+                        }
+                      }
+                    }}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <CheckCircle 
+                      size={24} 
+                      className="text-green-600" 
+                      strokeWidth={2}
+                    />
+                  </motion.div>
+                </div>
+                
+                <h3 className="text-base sm:text-lg font-semibold mb-2 text-green-800">
+                  Produk Berhasil Ditambahkan!
+                </h3>
+                
+                <p className="text-gray-600 text-xs sm:text-sm">
+                  Produk baru telah ditambahkan ke katalog
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Product Popup */}
+      <AnimatePresence>
+        {showEditPopup && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onClick={() => setShowEditPopup(false)}
+            />
+            
+            {/* Popup Content */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.8, y: 50 },
+                visible: { 
+                  opacity: 1, 
+                  scale: 1, 
+                  y: 0,
+                  transition: { 
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20
+                  }
+                },
+                exit: { 
+                  opacity: 0, 
+                  scale: 0.8,
+                  y: 50,
+                  transition: { duration: 0.2 }
+                }
+              }}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="bg-white rounded-xl p-4 sm:p-6 shadow-2xl border border-blue-100 max-w-md w-full relative z-10 mx-4"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl font-semibold text-blue-800">Edit Produk</h3>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setShowEditPopup(false)}
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  <X size={20} className="sm:w-6 sm:h-6" />
+                </motion.button>
+              </div>
+              
+              {/* Form */}
+              <div className="space-y-3 sm:space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-blue-700 mb-1">Nama Produk</label>
+                  <input
+                    value={editForm.name}
+                    onChange={(e) => setEditForm((s) => ({ ...s, name: e.target.value }))}
+                    className="w-full px-3 sm:px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
+                    placeholder="Nama produk"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-blue-700 mb-1">Harga</label>
+                  <input
+                    type="number"
+                    value={editForm.price}
+                    onChange={(e) => setEditForm((s) => ({ ...s, price: e.target.value }))}
+                    className="w-full px-3 sm:px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
+                    placeholder="Harga"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-blue-700 mb-1">Stok</label>
+                  <input
+                    type="number"
+                    value={editForm.stok}
+                    onChange={(e) => setEditForm((s) => ({ ...s, stok: e.target.value }))}
+                    className="w-full px-3 sm:px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
+                    placeholder="Stok"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-blue-700 mb-1">URL Gambar</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <ImageIcon className="h-4 w-4 text-blue-500" />
+                    </div>
+                    <input
+                      value={editForm.image_1}
+                      onChange={(e) => setEditForm((s) => ({ ...s, image_1: e.target.value }))}
+                      className="w-full pl-10 pr-3 sm:pr-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 bg-blue-50 text-sm sm:text-base"
+                      placeholder="URL Gambar"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Actions */}
+              <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
+                <motion.button
+                  onClick={() => setShowEditPopup(false)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex-1 px-3 sm:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition duration-200 font-medium text-sm sm:text-base"
+                >
+                  Batal
+                </motion.button>
+                <motion.button
+                  onClick={() => saveEdit(editId)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex-1 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 font-medium flex items-center justify-center gap-1 text-sm sm:text-base"
+                >
+                  <Save size={16} />
+                  Simpan
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Update Success Popup */}
+      <AnimatePresence>
+        {showUpdateSuccessPopup && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none p-4">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.8, y: 50 },
+                visible: { 
+                  opacity: 1, 
+                  scale: 1, 
+                  y: 0,
+                  transition: { 
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20
+                  }
+                },
+                exit: { 
+                  opacity: 0, 
+                  scale: 0.8,
+                  y: 50,
+                  transition: { duration: 0.2 }
+                }
+              }}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="bg-white rounded-xl p-4 sm:p-6 shadow-2xl border-2 border-blue-200 max-w-xs sm:max-w-sm w-full"
+            >
+              <div className="text-center">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 bg-blue-100">
+                  <motion.div
+                    variants={{
+                      hidden: { scale: 0, opacity: 0 },
+                      visible: { 
+                        scale: 1, 
+                        opacity: 1,
+                        transition: { 
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 10,
+                          delay: 0.1
+                        }
+                      }
+                    }}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <CheckCircle 
+                      size={24} 
+                      className="text-blue-600" 
+                      strokeWidth={2}
+                    />
+                  </motion.div>
+                </div>
+                
+                <h3 className="text-base sm:text-lg font-semibold mb-2 text-blue-800">
+                  Produk Berhasil Diupdate!
+                </h3>
+                
+                <p className="text-gray-600 text-xs sm:text-sm">
+                  Perubahan telah disimpan
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
