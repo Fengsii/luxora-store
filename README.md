@@ -3,9 +3,9 @@
 Luxora Store adalah platform e-commerce fashion modern yang memungkinkan pengguna menemukan, memilih, dan membeli berbagai gaya fashion sesuai keinginan mereka.
 Website ini menghadirkan pengalaman berbelanja online yang lengkap dengan sistem manajemen produk dan transaksi.
 
-Register: Pendaftaran akun pengguna baru
+###Register: Pendaftaran akun pengguna baru
 
-Login: Masuk ke akun pengguna yang sudah terdaftar
+###Login: Masuk ke akun pengguna yang sudah terdaftar
 
 🛠️ Panel Admin
 
