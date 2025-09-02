@@ -6,6 +6,7 @@ import SideBar from "./components/SideBar";
 import { ProductProvider } from "./helper/ProductContext";
 import { Menu } from "lucide-react"; // Import ikon Menu dari Lucide React
 import { getSession } from "./helper/session";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   const user = getSession(); 
@@ -27,9 +28,11 @@ const App = () => {
   if (!role) return <Outlet />;
 
   return (
+    
     <ProductProvider>
       {role === "user" ? (
         <>
+          <ScrollToTop/>
           <Header />
           <Outlet />
           <Footer />
