@@ -490,7 +490,7 @@ const Home = () => {
               <Quote size={64} className="mx-auto text-blue-200 opacity-60" />
             </motion.div>
             <blockquote className="text-2xl md:text-3xl italic mb-6 max-w-4xl mx-auto leading-relaxed">
-              "Ingat yaah... Hari ini mungkin berat, tapi besok bisa jadi jawaban atas semua doa yang pernah kamu ucapkan."
+              "Remember... Today may be hard, but tomorrow could be the answer to all the prayers you've ever said."
             </blockquote>
             <motion.p 
               className="text-blue-200 text-lg"
@@ -498,7 +498,7 @@ const Home = () => {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              - Efengsi Rahmanto Zalukhu, Pekanbaru 2025
+              - Efengsi Rahmanto Zalukhu, Bandung 2025
             </motion.p>
           </motion.div>
         </div>

@@ -3,6 +3,7 @@ import { getSession } from "../helper/session";
 
 const ProtectedRoute = ({ role }) => {
   const user = getSession();
+ 
 
   if (!user) {
     return <Navigate to="/" replace />; // kalau belum login balik ke login

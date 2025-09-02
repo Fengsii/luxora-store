@@ -5,9 +5,11 @@ import Footer from "./components/Footer";
 import SideBar from "./components/SideBar";
 import { ProductProvider } from "./helper/ProductContext";
 import { Menu } from "lucide-react"; // Import ikon Menu dari Lucide React
+import { getSession } from "./helper/session";
 
 const App = () => {
-  const role = localStorage.getItem("role");
+  const user = getSession(); 
+  const role = user?.role; // ambil role dari session
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Effect untuk menutup sidebar ketika resize ke desktop
